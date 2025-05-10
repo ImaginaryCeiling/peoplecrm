@@ -14,9 +14,9 @@ export default function Home() {
       </p>
       </div>
       <div className="flex flex-col gap-4 space-y-4 mt-4">
-        <a href="/create">Add a Person</a>
-        <a href="/read">View People</a>
-        <a href="/edit">Edit a Person</a>
+        <a href="/create">Create a Person</a>
+        <a href="/read">Read People</a>
+        <a href="/update">Update a Person</a>
         <a href="/delete">Delete a Person</a>
       </div>
     </div>

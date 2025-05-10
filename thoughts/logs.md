@@ -8,4 +8,6 @@ There's nothing revolutionary about this product. The differentiation will come 
 
 I think today to get started we'll do some basic CRUD word. I'll try to replicate what I have going on in my notes app at the moment; lets see what happens. Very basic stuff; I'm talking html forms and local storage
 
+ok it's 2:41 am now and i need to be up at 8am so i'm going to call it from here. got the c in crud working and deployed [live](peoplecrm-plglenr2p-arnav-chauhans-projects-fbc8225a.vercel.app). will do the rest later ig
+
 ## 5/11/25
