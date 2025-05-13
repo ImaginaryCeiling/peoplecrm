@@ -1,0 +1,16 @@
+{
+    "Comment": "Add CNAME Record",
+    "Changes": [
+        {
+            "Action": "CREATE",
+            "ResourceRecordSet": {
+                "Name": "pcrm.arnavchauhan.com.",
+                "Type": "CNAME",
+                "TTL": 60,
+                "ResourceRecords": [
+                    { "Value": "cname.vercel-dns.com." }
+                ]
+            }
+        }
+    ]
+}
