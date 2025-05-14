@@ -1,15 +1,26 @@
 import { NextResponse } from 'next/server';
 
+// Define the Person type
+interface Person {
+    id: number;
+    name: string;
+    email: string;
+    phone?: string;
+    address?: string;
+    notes?: string;
+    createdAt: string;
+    updatedAt?: string;
+}
+
 // This is a temporary in-memory storage
 // In a real application, you'd want to use a database
 
 // Define a global object to store people data across requests
-const globalForPeople = globalThis as unknown as { people: any[] }
+const globalForPeople = globalThis as unknown as { people: Person[] }
 // Initialize the people array if it doesn't already exist
 globalForPeople.people = globalForPeople.people || []
 // Reference the global people array for use in the API
 const people = globalForPeople.people
-
 
 export async function POST(request: Request) {
   try {
@@ -25,7 +36,7 @@ export async function POST(request: Request) {
     }
 
     // Create new person
-    const newPerson = {
+    const newPerson: Person = {
       id: people.length > 0 ? people[people.length - 1].id + 1 : 1, // Sequential ID generation
       name,
       email,
@@ -39,7 +50,8 @@ export async function POST(request: Request) {
     people.push(newPerson);
 
     return NextResponse.json(newPerson, { status: 201 });
-  } catch (error) {
+  } catch (err) {
+    console.error('Error creating person:', err);
     return NextResponse.json(
       { error: 'Error creating person' },
       { status: 500 }
@@ -48,7 +60,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-console.log("Here is the people array: "+people);
+  console.log("Here is the people array: "+people);
   return NextResponse.json(people);
 }
 
@@ -71,7 +83,8 @@ export async function DELETE(request: Request) {
 
         // Return a success message
         return NextResponse.json({ message: `Person with ID ${id} deleted successfully` }, { status: 200 });
-    } catch (error) {
+    } catch (err) {
+        console.error('Error deleting person:', err);
         // Return a 500 response in case of an error
         return NextResponse.json({ error: 'Error deleting person' }, { status: 500 });
     }
@@ -95,7 +108,7 @@ export async function PUT(request: Request) {
         }
 
         // Create update object with only the fields that have non-empty values
-        const updates: any = {};
+        const updates: Partial<Person> = {};
         if (name && name.trim() !== '') updates.name = name;
         if (email && email.trim() !== '') updates.email = email;
         if (phone && phone.trim() !== '') updates.phone = phone;
@@ -113,7 +126,8 @@ export async function PUT(request: Request) {
         people[personIndex] = updatedPerson;
 
         return NextResponse.json(updatedPerson, { status: 200 });
-    } catch (error) {
+    } catch (err) {
+        console.error('Error updating person:', err);
         return NextResponse.json(
             { error: 'Error updating person' },
             { status: 500 }
