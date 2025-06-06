@@ -17,6 +17,7 @@ export default function Home() {
       <p>
         To get started, we&apos;re going to do some basic CRUD work to allow you to add, edit, and delete people.
       </p>
+      <p>For my reviewers - still a work in progress! This is very basic CRUD functionality so far - exams are almost finished for me and then work will start for real. checkout <a href="https://arnavchauhan.com/blog/peoplecrm">the blog post</a> for more details about what this is supposed to be.</p>
       </div>
       {isSignedIn ? (
         // what shows when user is signed in
