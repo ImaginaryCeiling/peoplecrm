@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton, SignUpButton } from "@clerk/nextjs";
 import "./globals.css";
+import Link from "next/link";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,13 +49,18 @@ export default function RootLayout({
             <header className="flex justify-between items-center p-4 gap-4 h-16">
               <SignedOut>
                 <SignInButton />
+                <h1 className="text-2xl font-bold">
+                <Link href="/">PeopleCRM</Link>
+              </h1>
                 <SignUpButton />
               </SignedOut>
+              
               <SignedIn>
                 <UserButton />
               </SignedIn>
             </header>
           {children}
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
