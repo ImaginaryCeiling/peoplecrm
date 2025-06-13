@@ -9,6 +9,7 @@ export default function Home() {
 
   return (
     <div className="">
+      <Header />
       {isSignedIn ? (
         <div className="">
           <div>
