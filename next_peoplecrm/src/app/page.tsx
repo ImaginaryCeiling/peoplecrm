@@ -1,15 +1,20 @@
 "use client"
 
-import { useUser } from "@clerk/nextjs"
+
 import Header from "@/components/header"
-import Splash from "@/components/splash"
-import Dashboard from "@/components/dashboard/Dashboard"
+import LandingPage from "@/components/landingpage"
+import { FeaturesSection } from "@/components/section/features-section"
+import { CtaSection } from "@/components/section/cta-section"
+import Footer from "@/components/layout/footer"
 
 export default function Home() {
 
   return (
     <main>
-        <Splash />
+      <LandingPage />
+      <FeaturesSection />
+      <CtaSection />
+      <Footer />
     </main>
   )
 }

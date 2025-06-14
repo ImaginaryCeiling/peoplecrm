@@ -6,7 +6,7 @@ import Link from "next/link"
 import { ArrowDown } from "lucide-react"
 
 
-interface SplashProps {
+interface LandingPageProps {
   title?: string
   subtitle?: string
   primaryCta?: {
@@ -20,13 +20,13 @@ interface SplashProps {
   showScrollIndicator?: boolean
 }
 
-export default function Splash({
-  title = "Welcome to PeopleCRM",
+export default function LandingPage({
+  title = "Welcome to Kokoro",
   subtitle = "A modern, secure, and elegant way to manage your people. Powered by Supabase and Clerk.",
   primaryCta = { text: "Get Started", href: "/home" },
   secondaryCta = { text: "Learn More", href: "https://arnavchauhan.com/blog/peoplecrm" },
   showScrollIndicator = true,
-}: SplashProps) {
+}: LandingPageProps) {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
       {/* Auth Navigation */}
@@ -37,7 +37,7 @@ export default function Splash({
           </Button>
         </SignInButton>
         <Link href="/" className="text-white text-xl font-bold">
-          PeopleCRM
+          Kokoro
         </Link>
 
         <SignUpButton>

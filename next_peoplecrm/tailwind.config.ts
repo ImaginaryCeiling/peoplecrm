@@ -52,7 +52,7 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // PeopleCRM Brand Colors
+        // Kokoro Brand Colors
         brand: {
           50: "#fffbeb",
           100: "#fef3c7",

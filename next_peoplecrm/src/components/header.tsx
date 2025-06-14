@@ -7,7 +7,7 @@ export default function Header() {
 
     return (
         <div className="flex justify-between items-center p-4 text-2xl font-bold">
-            <Link href="/">PeopleCRM</Link>
+            <Link href="/">Kokoro</Link>
             <div className="flex gap-2">
                 {isSignedIn ? (
                     <SignOutButton>

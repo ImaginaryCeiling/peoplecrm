@@ -16,19 +16,19 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "PeopleCRM",
+  title: "Kokoro",
   description: "A human-first CRM to keep track of people you care about",
   openGraph: {
-    title: "PeopleCRM",
+    title: "Kokoro",
     description: "A human-first CRM to keep track of people you care about",
     images: [{ url: "/og-image.png" }],
-    siteName: "PeopleCRM",
+    siteName: "Kokoro",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PeopleCRM",
+    title: "Kokoro",
     description: "A human-first CRM to keep track of people you care about",
     images: ["/og-image.png"],
   },
