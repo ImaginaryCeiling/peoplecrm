@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
+import { auth } from '@clerk/nextjs/server';
 
 // Define the update type
 interface ContactUpdate {
@@ -12,6 +13,12 @@ interface ContactUpdate {
 }
 
 export async function POST(request: Request) {
+
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const body = await request.json();
     const { name, email, phone, address, notes } = body;
@@ -23,9 +30,10 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-
+    
     // Create new contact
     const {data, error} = await supabase.from('contacts').insert({
+      user_id: userId,
       name,
       email,
       phone,
@@ -50,8 +58,18 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
-    const { data: contacts, error } = await supabase.from('contacts').select('*');
+    const { data: contacts, error } = await supabase
+    .from('contacts')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
     if (error) {
       console.log("Error fetching contacts: "+error);
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -64,6 +82,11 @@ export async function GET() {
 }
 
 export async function DELETE(request: Request) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const { id } = await request.json();
     const numericId = Number(id);
@@ -71,7 +94,9 @@ export async function DELETE(request: Request) {
       .from('contacts')
       .delete()
       .eq('id', numericId)
+      .eq('user_id', userId)
       .select();
+
     if (error) {
       console.error('Error deleting contact:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -90,6 +115,11 @@ export async function DELETE(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const body = await request.json();
     const { id, name, email, phone, address, notes } = body;
@@ -111,6 +141,7 @@ export async function PUT(request: Request) {
       .from('contacts')
       .update(updates)
       .eq('id', id)
+      .eq('user_id', userId)
       .select();
 
     if (error) {
