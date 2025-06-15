@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { SignInButton, SignUpButton } from "@clerk/nextjs"
 import Link from "next/link"
@@ -9,42 +10,56 @@ import { ArrowDown } from "lucide-react"
 interface LandingPageProps {
   title?: string
   subtitle?: string
-  primaryCta?: {
-    text: string
-    href: string
-  }
-  secondaryCta?: {
-    text: string
-    href: string
-  }
   showScrollIndicator?: boolean
 }
 
+
+
 export default function LandingPage({
   title = "Welcome to Kokoro",
-  subtitle = "A modern, secure, and elegant way to manage your people. Powered by Supabase and Clerk.",
-  primaryCta = { text: "Get Started", href: "/home" },
-  secondaryCta = { text: "Learn More", href: "https://arnavchauhan.com/blog/peoplecrm" },
+  subtitle = "A modern and elegant way to manage the people you care about.",
   showScrollIndicator = true,
 }: LandingPageProps) {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage("");
+    
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to add email to waitlist');
+      }
+
+      setMessage(data.message);
+      setEmail('');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Failed to add email to waitlist');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
       {/* Auth Navigation */}
       <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-20">
-        <SignInButton>
-          <Button variant="ghost" className="text-white hover:bg-white/10">
-            Sign in
-          </Button>
-        </SignInButton>
         <Link href="/" className="text-white text-xl font-bold">
           Kokoro
         </Link>
-
-        <SignUpButton>
-          <Button variant="ghost" className="text-white hover:bg-white/10">
-            Sign up
-          </Button>
-        </SignUpButton>
       </div>
 
       {/* Subtle Background Pattern */}
@@ -69,27 +84,32 @@ export default function LandingPage({
           </p>
         </div>
 
-        {/* Call-to-Action Buttons */}
+        {/* Waitlist Signup Form */}
         <div className="animate-scale-in pt-8" style={{ animationDelay: "0.4s" }}>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            
-              <Button
-                asChild
-                size="lg"
-                className="btn-brand px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg rounded-full min-w-[140px]"
-              >
-                <Link href={primaryCta.href}>{primaryCta.text}</Link>
-              </Button>
-
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
+            <input
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+              className="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
+            />
             <Button
-              asChild
-              variant="outline"
+              type="submit"
               size="lg"
-              className="btn-brand-outline px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg rounded-full min-w-[140px] text-black"
+              disabled={isLoading}
+              className="btn-brand px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg rounded-full min-w-[140px] bg-white text-black disabled:opacity-50"
             >
-              <Link href={secondaryCta.href}>{secondaryCta.text}</Link>
+              {isLoading ? 'Joining...' : 'Join Waitlist'}
             </Button>
-          </div>
+          </form>
+          {message && (
+            <p className={`text-sm mt-2 ${message.includes('error') ? 'text-red-400' : 'text-green-400'}`}>
+              {message}
+            </p>
+          )}
         </div>
 
         {/* Scroll Indicator */}

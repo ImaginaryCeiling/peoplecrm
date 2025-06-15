@@ -33,7 +33,7 @@ interface FeaturesSectionProps {
 
 export function FeaturesSection({
   title = "Why Choose Kokoro?",
-  subtitle = "Built for modern teams who value relationships and want to manage their people with care and precision.",
+  subtitle = "Built for people who value relationships and want to manage their people with care and precision.",
 }: FeaturesSectionProps) {
   return (
     <Section>
