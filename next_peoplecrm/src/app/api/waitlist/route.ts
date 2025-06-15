@@ -1,5 +1,7 @@
 import { supabase } from '@/lib/supabaseClient';
+import { resend } from '@/lib/resend';
 import { NextResponse } from 'next/server';
+import WelcomeEmail from '@/emails/welcome-email';
 
 interface Email {
     email: string;
@@ -58,6 +60,27 @@ export async function POST(request: Request) {
                 { error: 'Failed to add email to waitlist' },
                 { status: 500 }
             );
+        }
+
+        // Send welcome email
+        try {
+            console.log('Attempting to send welcome email to:', email);
+            
+            const emailResponse = await resend.emails.send({
+                from: 'Kokoro <onboarding@resend.dev>', // Using Resend's test domain
+                to: email,
+                subject: 'Welcome to Kokoro - You\'re on the waitlist!',
+                react: WelcomeEmail({ email }),
+            });
+            
+            console.log('Email sent successfully:', emailResponse);
+        } catch (emailError) {
+            console.error('Detailed email error:', {
+                message: emailError instanceof Error ? emailError.message : 'Unknown error',
+                error: emailError,
+                stack: emailError instanceof Error ? emailError.stack : undefined
+            });
+            // Don't fail the request if email sending fails
         }
 
         return NextResponse.json(
