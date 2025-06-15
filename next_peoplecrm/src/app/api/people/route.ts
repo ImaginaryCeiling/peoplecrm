@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin } from '@/lib/supabaseClient';
 import { auth } from '@clerk/nextjs/server';
 
 // Define the update type
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     }
     
     // Create new contact
-    const {data, error} = await supabase.from('contacts').insert({
+    const {data, error} = await supabaseAdmin.from('contacts').insert({
       user_id: userId,
       name,
       email,
@@ -64,7 +64,7 @@ export async function GET() {
   }
 
   try {
-    const { data: contacts, error } = await supabase
+    const { data: contacts, error } = await supabaseAdmin
     .from('contacts')
     .select('*')
     .eq('user_id', userId)
@@ -90,7 +90,7 @@ export async function DELETE(request: Request) {
   try {
     const { id } = await request.json();
     const numericId = Number(id);
-    const { error, data } = await supabase
+    const { error, data } = await supabaseAdmin
       .from('contacts')
       .delete()
       .eq('id', numericId)
@@ -137,7 +137,7 @@ export async function PUT(request: Request) {
       updated_at: new Date().toISOString(),
     };
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('contacts')
       .update(updates)
       .eq('id', id)
