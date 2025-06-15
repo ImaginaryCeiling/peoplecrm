@@ -54,7 +54,12 @@ export default function LandingPage({
   }
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+      style={{
+        backgroundImage: `
+          radial-gradient(circle at 50% 150%, #000 35%, #733000 45%, #000 55%)
+        `
+      }}>
       {/* Auth Navigation */}
       <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-20">
         <Link href="/" className="text-white text-xl font-bold">
@@ -106,7 +111,7 @@ export default function LandingPage({
             </Button>
           </form>
           {message && (
-            <p className={`text-sm mt-2 ${message.includes('error') ? 'text-red-400' : 'text-green-400'}`}>
+            <p className={`text-md mt-4 ${message.includes('error') ? 'text-red-400' : 'text-green-400'}`}>
               {message}
             </p>
           )}
