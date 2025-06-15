@@ -7,7 +7,7 @@ import Link from "next/link"
 import { ArrowDown } from "lucide-react"
 
 
-interface LandingPageProps {
+interface HeroSectionProps {
   title?: string
   subtitle?: string
   showScrollIndicator?: boolean
@@ -15,11 +15,11 @@ interface LandingPageProps {
 
 
 
-export default function LandingPage({
+export default function HeroSection({
   title = "Welcome to Kokoro",
   subtitle = "A modern and elegant way to manage the people you care about.",
   showScrollIndicator = true,
-}: LandingPageProps) {
+}: HeroSectionProps) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -41,13 +41,13 @@ export default function LandingPage({
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to add email to waitlist');
+        throw new Error(data.error || "Failed to add email to waitlist");
       }
 
       setMessage(data.message);
       setEmail('');
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Failed to add email to waitlist');
+      setMessage(error instanceof Error ? error.message : "Failed to add email to waitlist");
     } finally {
       setIsLoading(false);
     }
