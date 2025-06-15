@@ -62,7 +62,7 @@ export default function HeroSection({
       }}>
       {/* Auth Navigation */}
       <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-20">
-        <Link href="/" className="text-white text-xl font-bold">
+        <Link href="/" className="text-orange-500 text-xl font-bold">
           Kokoro
         </Link>
       </div>
