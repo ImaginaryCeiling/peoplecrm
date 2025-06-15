@@ -17,3 +17,5 @@ Finally back! Finals are over, so is junior year. thank goodness. now i have tim
 ## 6/14/25
 
 On a plane to SF for startup school as i'm writing this. have added a waitlist, made the landing page look nice, and find a cool name: Kokoro. the gradient effect really makes it look good imo. as i finished spending time with the gradient changing values by 5% to move it slightly to the left i realized that i was hiding from the actual hard part. making a landing page look nice is nothing but performative. time to get my hands dirty and actually make a product people want to use. no time better than now ig. onwards we go; Ad astra per aspera.
+
+a few minutes later - builds are succeeding, lint is clearing, i think we are good to push alnding page to prod :)  

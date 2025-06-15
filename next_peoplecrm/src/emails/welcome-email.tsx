@@ -18,18 +18,18 @@ export const WelcomeEmail = ({ email }: WelcomeEmailProps) => {
   return (
     <Html>
       <Head />
-      <Preview>Welcome to Kokoro - You're on the waitlist!</Preview>
+      <Preview>Welcome to Kokoro - You&apos;re on the waitlist!</Preview>
       <Body style={main}>
         <Container style={container}>
           <Heading style={h1}>Welcome to Kokoro! 🎉</Heading>
           <Text style={text}>
-            Thank you for joining our waitlist! We're excited to have you on board.
+            Thank you for joining our waitlist! We&apos;re excited to have you on board.
           </Text>
           <Text style={text}>
-            We're building something special - a human-first CRM that helps you keep track of the people you care about.
+            We&apos;re building something special - a human-first CRM that helps you keep track of the people you care about.
           </Text>
           <Text style={text}>
-            We'll keep you updated on our progress and let you know as soon as we're ready to launch.
+              We&apos;ll keep you updated on our progress and let you know as soon as we&apos;re ready to launch.
           </Text>
           <Text style={text}>
             Best regards,<br />
