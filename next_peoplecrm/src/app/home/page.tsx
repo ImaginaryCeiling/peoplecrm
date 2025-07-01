@@ -1,23 +1,25 @@
 "use client"
 
-import Header from "@/components/header";
-import Dashboard from "@/components/dashboard/Dashboard";
-import { useUser } from "@clerk/nextjs";
-import SignedOutPage from "@/components/signedoutpage";
-import { ProfileSection } from "@/components/profile-section";
+import Header from "@/components/header"
+import { WelcomeSection } from "@/components/welcome-section"
+import { ProfileSection } from "@/components/profile-section"
+import { MainTabs } from "@/components/main-tabs"
 
-export default function Home() {
-    const { isSignedIn, user } = useUser();
+export default function Dashboard() {
+  const handleAddNew = (type: string) => {
+    // Placeholder for add functionality - will be implemented with forms later
+    console.log(`Add new ${type}`)
+  }
 
-    return (
-        <main>
-            <Header />
-            {isSignedIn && user ? (
-                <Dashboard user={user} />
-            ):(   
-                <SignedOutPage />
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
 
-            )}
-        </main>
-    )
+      <div className="container mx-auto px-4 py-8">
+        <WelcomeSection />
+        <ProfileSection />
+        <MainTabs onAddNew={handleAddNew} />
+      </div>
+    </div>
+  )
 }

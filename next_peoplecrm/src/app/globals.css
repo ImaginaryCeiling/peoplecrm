@@ -118,6 +118,26 @@
       linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
     background-size: 60px 60px;
   }
+
+  /* Large gradient backgrounds - moved from inline styles to avoid webpack cache issues */
+  .bg-hero-gradient {
+    background-image: radial-gradient(circle at 50% 150%, #000 35%, #733000 45%, #000 55%);
+  }
+
+  .bg-glow-effect {
+    background: radial-gradient(
+      ellipse 800px 600px at 50% 120%,
+      rgba(245, 158, 11, 0.15) 0%,
+      rgba(249, 115, 22, 0.08) 25%,
+      rgba(154, 52, 18, 0.03) 50%,
+      transparent 80%
+    );
+  }
+
+  .bg-dot-pattern-inline {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
 }
 
 @keyframes fade-in {

@@ -54,12 +54,7 @@ export default function HeroSection({
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-      style={{
-        backgroundImage: `
-          radial-gradient(circle at 50% 150%, #000 35%, #733000 45%, #000 55%)
-        `
-      }}>
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-hero-gradient">
       {/* Auth Navigation */}
       <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-20">
         <Link href="/" className="text-orange-500 text-xl font-bold">

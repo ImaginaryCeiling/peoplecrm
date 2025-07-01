@@ -8,6 +8,7 @@ import { CtaSection } from "@/components/section/cta-section"
 import Footer from "@/components/layout/footer"
 import { WhatSection } from "@/components/section/what-section" 
 
+
 export default function Home() {
 
   return (
