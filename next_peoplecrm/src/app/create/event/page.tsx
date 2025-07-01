@@ -14,7 +14,7 @@ export default function AddEvent() {
   const [eventDate, setEventDate] = useState(""); // State for the event date input
   const [eventLocation, setEventLocation] = useState(""); // State for the event location input
   const [eventDescription, setEventDescription] = useState(""); // State for the event description input
-  const [eventOrganizer, setEventOrganizer] =useState(""); // State for the event organizer input
+  const [eventOrganizer, setEventOrganizer] = useState(""); // State for the event organizer input
   
   // Declare a state variable for displaying messages to the user
   const [message, setMessage] = useState("Waiting for input...");
