@@ -1,0 +1,71 @@
+{
+    "Comment": "Adding Clerk CNAME records for Frontend API, Account Portal, and Email",
+    "Changes": [
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "clerk.pcrm.arnavchauhan.com.",
+          "Type": "CNAME",
+          "TTL": 300,
+          "ResourceRecords": [
+            {
+              "Value": "frontend-api.clerk.services."
+            }
+          ]
+        }
+      },
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "accounts.pcrm.arnavchauhan.com.",
+          "Type": "CNAME",
+          "TTL": 300,
+          "ResourceRecords": [
+            {
+              "Value": "accounts.clerk.services."
+            }
+          ]
+        }
+      },
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "clk._domainkey.pcrm.arnavchauhan.com.",
+          "Type": "CNAME",
+          "TTL": 300,
+          "ResourceRecords": [
+            {
+              "Value": "dkim1.fcfbg78ma2xt.clerk.services."
+            }
+          ]
+        }
+      },
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "clk2._domainkey.pcrm.arnavchauhan.com.",
+          "Type": "CNAME",
+          "TTL": 300,
+          "ResourceRecords": [
+            {
+              "Value": "dkim2.fcfbg78ma2xt.clerk.services."
+            }
+          ]
+        }
+      },
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "clkmail.pcrm.arnavchauhan.com.",
+          "Type": "CNAME",
+          "TTL": 300,
+          "ResourceRecords": [
+            {
+              "Value": "mail.fcfbg78ma2xt.clerk.services."
+            }
+          ]
+        }
+      }
+    ]
+  }
+  
