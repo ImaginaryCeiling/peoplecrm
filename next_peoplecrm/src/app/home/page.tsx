@@ -4,11 +4,11 @@ import Header from "@/components/header"
 import { WelcomeSection } from "@/components/welcome-section"
 import { ProfileSection } from "@/components/profile-section"
 import { MainTabs } from "@/components/main-tabs"
+import type { Event } from "@/components/events/event-item"
+import type { Person } from "@/components/people/people-item"
+import type { Organization } from "@/components/organizations/organization-item"
 
-interface EditableItem {
-  id: number;
-  [key: string]: unknown;
-}
+type Editable = Event | Person | Organization;
 
 export default function Dashboard() {
   const handleAddNew = (type: string) => {
@@ -16,7 +16,7 @@ export default function Dashboard() {
     console.log(`Add new ${type}`)
   }
 
-  const handleEdit = (type: string, item: EditableItem) => {
+  const handleEdit = (type: string, item: Editable) => {
     // Navigate to edit page based on type
     switch (type) {
       case 'person':

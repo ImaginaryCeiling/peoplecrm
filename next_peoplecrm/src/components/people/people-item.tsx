@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Trash2, Mail, Phone, MapPin, Edit } from "lucide-react"
 
-interface Person {
+export interface Person {
   id: number
   name: string
   email?: string

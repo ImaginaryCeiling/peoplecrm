@@ -9,7 +9,3 @@ export interface User {
 export interface UserList {
     users: User[];
 }
-
-export interface EditableItem {
-  id: number;
-}

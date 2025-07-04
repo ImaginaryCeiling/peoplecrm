@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Trash2, Calendar, MapPin, User, Edit } from "lucide-react"
 
-interface Event {
+export interface Event {
   id: number
   eventName: string
   eventDate: string
   eventLocation?: string
   eventDescription?: string
   eventOrganizer?: string
-}   
+}
 
 interface EventItemProps {
   event: Event

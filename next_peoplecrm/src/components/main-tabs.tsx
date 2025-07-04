@@ -6,11 +6,15 @@ import { EventsTab } from "./events/event-tab"
 import { PeopleTab } from "./people/people-tab"
 import { OrganizationsTab } from "./organizations/organization-tab"
 import { useEvents, usePeople, useOrganizations } from "@/hooks/use-data"
-import type { EditableItem } from "@/types/user"
+import type { Event } from "@/components/events/event-item"
+import type { Person } from "@/components/people/people-item"
+import type { Organization } from "@/components/organizations/organization-item"
+
+type Editable = Event | Person | Organization;
 
 interface MainTabsProps {
   onAddNew: (type: string) => void
-  onEdit: (type: string, item: EditableItem) => void
+  onEdit: (type: string, item: Editable) => void
 }
 
 export function MainTabs({ onAddNew, onEdit }: MainTabsProps) {

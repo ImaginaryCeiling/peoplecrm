@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Building2, Trash2, Globe, Mail, MapPin, Users, Edit } from "lucide-react"
 
-interface Organization {
+export interface Organization {
   id: number
   name: string
   industry?: string
