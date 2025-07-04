@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from 'next/navigation';
 import Header from "@/components/header";
 
@@ -13,7 +13,7 @@ interface Event {
   event_organizer?: string;
 }
 
-export default function EditEvent() {
+function EditEventContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   
@@ -167,4 +167,18 @@ export default function EditEvent() {
       <p className="text-sm text-gray-600">{message}</p>
     </div>
   );
-} 
+}
+
+export default function EditEvent() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-md mx-auto p-6 space-y-4">
+        <Header />
+        <h1 className="text-2xl font-bold mb-6">Edit Event</h1>
+        <p>Loading...</p>
+      </div>
+    }>
+      <EditEventContent />
+    </Suspense>
+  );
+}

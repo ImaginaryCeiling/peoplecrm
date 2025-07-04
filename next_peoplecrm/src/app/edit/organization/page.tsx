@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from 'next/navigation';
 import Header from "@/components/header";
 
@@ -14,7 +14,7 @@ interface Organization {
   notes?: string;
 }
 
-export default function EditOrganization() {
+function EditOrganizationContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   
@@ -182,4 +182,18 @@ export default function EditOrganization() {
       <p className="text-sm text-gray-600">{message}</p>
     </div>
   );
-} 
+}
+
+export default function EditOrganization() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-md mx-auto p-6 space-y-4">
+        <Header />
+        <h1 className="text-2xl font-bold mb-6">Edit Organization</h1>
+        <p>Loading...</p>
+      </div>
+    }>
+      <EditOrganizationContent />
+    </Suspense>
+  );
+}
