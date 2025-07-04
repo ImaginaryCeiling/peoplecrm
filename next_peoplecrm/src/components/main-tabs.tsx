@@ -9,6 +9,7 @@ import { useEvents, usePeople, useOrganizations } from "@/hooks/use-data"
 import type { Event } from "@/components/events/event-item"
 import type { Person } from "@/components/people/people-item"
 import type { Organization } from "@/components/organizations/organization-item"
+import { useUser, SignInButton } from "@clerk/nextjs"
 
 type Editable = Event | Person | Organization;
 
@@ -18,6 +19,19 @@ interface MainTabsProps {
 }
 
 export function MainTabs({ onAddNew, onEdit }: MainTabsProps) {
+  const { user, isLoaded } = useUser();
+  if (!isLoaded) {
+    return null;
+  }
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12">
+        <p className="mb-4 text-lg text-muted-foreground">Please sign in to view your events, people, and organizations.</p>
+        <SignInButton />
+      </div>
+    );
+  }
+
   const { events, loading: eventsLoading, error: eventsError, deleteEvent } = useEvents()
   const { people, loading: peopleLoading, error: peopleError, deletePerson } = usePeople()
   const { organizations, loading: orgsLoading, error: orgsError, deleteOrganization } = useOrganizations()
