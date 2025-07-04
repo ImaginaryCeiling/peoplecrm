@@ -31,6 +31,15 @@ interface Organization {
   employee_count?: number
 }
 
+interface DatabaseEvent {
+  id: number;
+  event_name: string;
+  event_date: string;
+  event_location?: string;
+  event_description?: string;
+  event_organizer?: string;
+}
+
 // Mock data
 const mockEvents: Event[] = [
   {
@@ -98,7 +107,7 @@ export function useEvents() {
       }
       const data = await response.json()
       // Transform database fields to match UI interface
-      const transformedEvents = data.map((event: any) => ({
+      const transformedEvents = data.map((event: DatabaseEvent) => ({
         id: event.id,
         eventName: event.event_name,
         eventDate: event.event_date,

@@ -3,10 +3,6 @@ import { resend } from '@/lib/resend';
 import { NextResponse } from 'next/server';
 import WelcomeEmail from '@/emails/welcome-email';
 
-interface Email {
-    email: string;
-}
-
 export async function POST(request: Request) {
     try {
         const body = await request.json();

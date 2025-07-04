@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from 'next/navigation';
 import Header from "@/components/header";
 
@@ -26,13 +26,7 @@ export default function EditPerson() {
   const [message, setMessage] = useState("Loading...");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (id) {
-      fetchPerson();
-    }
-  }, [id]);
-
-  const fetchPerson = async () => {
+  const fetchPerson = useCallback(async () => {
     try {
       const response = await fetch(`/api/people?id=${id}`);
       if (!response.ok) {
@@ -50,7 +44,13 @@ export default function EditPerson() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      fetchPerson();
+    }
+  }, [id, fetchPerson]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

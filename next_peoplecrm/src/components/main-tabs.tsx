@@ -7,9 +7,13 @@ import { PeopleTab } from "./people/people-tab"
 import { OrganizationsTab } from "./organizations/organization-tab"
 import { useEvents, usePeople, useOrganizations } from "@/hooks/use-data"
 
+interface EditableItem {
+  id: number;
+}
+
 interface MainTabsProps {
   onAddNew: (type: string) => void
-  onEdit: (type: string, item: any) => void
+  onEdit: (type: string, item: EditableItem) => void
 }
 
 export function MainTabs({ onAddNew, onEdit }: MainTabsProps) {

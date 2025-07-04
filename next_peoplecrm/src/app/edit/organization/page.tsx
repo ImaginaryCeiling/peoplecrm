@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from 'next/navigation';
 import Header from "@/components/header";
 
@@ -27,13 +27,7 @@ export default function EditOrganization() {
   const [message, setMessage] = useState("Loading...");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (id) {
-      fetchOrganization();
-    }
-  }, [id]);
-
-  const fetchOrganization = async () => {
+  const fetchOrganization = useCallback(async () => {
     try {
       const response = await fetch(`/api/organization?id=${id}`);
       if (!response.ok) {
@@ -52,7 +46,13 @@ export default function EditOrganization() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      fetchOrganization();
+    }
+  }, [id, fetchOrganization]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

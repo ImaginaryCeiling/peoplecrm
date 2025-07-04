@@ -1,2 +1,1 @@
-export interface Event {
-}
+export type Event = Record<string, never>;

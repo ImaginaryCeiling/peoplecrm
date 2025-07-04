@@ -5,13 +5,18 @@ import { WelcomeSection } from "@/components/welcome-section"
 import { ProfileSection } from "@/components/profile-section"
 import { MainTabs } from "@/components/main-tabs"
 
+interface EditableItem {
+  id: number;
+  [key: string]: unknown;
+}
+
 export default function Dashboard() {
   const handleAddNew = (type: string) => {
     // Placeholder for add functionality - will be implemented with forms later
     console.log(`Add new ${type}`)
   }
 
-  const handleEdit = (type: string, item: any) => {
+  const handleEdit = (type: string, item: EditableItem) => {
     // Navigate to edit page based on type
     switch (type) {
       case 'person':
