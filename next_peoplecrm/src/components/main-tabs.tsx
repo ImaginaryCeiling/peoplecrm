@@ -20,6 +20,10 @@ interface MainTabsProps {
 
 export function MainTabs({ onAddNew, onEdit }: MainTabsProps) {
   const { user, isLoaded } = useUser();
+  const { events, loading: eventsLoading, error: eventsError, deleteEvent } = useEvents();
+  const { people, loading: peopleLoading, error: peopleError, deletePerson } = usePeople();
+  const { organizations, loading: orgsLoading, error: orgsError, deleteOrganization } = useOrganizations();
+
   if (!isLoaded) {
     return null;
   }
@@ -31,10 +35,6 @@ export function MainTabs({ onAddNew, onEdit }: MainTabsProps) {
       </div>
     );
   }
-
-  const { events, loading: eventsLoading, error: eventsError, deleteEvent } = useEvents()
-  const { people, loading: peopleLoading, error: peopleError, deletePerson } = usePeople()
-  const { organizations, loading: orgsLoading, error: orgsError, deleteOrganization } = useOrganizations()
 
   return (
     <Tabs defaultValue="events" className="w-full">
