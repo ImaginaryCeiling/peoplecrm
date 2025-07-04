@@ -22,7 +22,7 @@ export default function AddOrganization() {
         console.log("Here is the data: "+orgName, industry, location, website, numEmployees, contactEmail, associatedPeople, associatedEvents);
     
     try {
-        const response = await fetch('/api/organizations', {
+        const response = await fetch('/api/organization', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -51,6 +51,11 @@ export default function AddOrganization() {
         setContactEmail('');
         setNotes('');
         setMessage('Organization added successfully');
+        
+        // Redirect back to dashboard after successful creation
+        setTimeout(() => {
+          window.location.href = '/home';
+        }, 1500);
     }
     catch (error) {
         console.error('Error:', error);

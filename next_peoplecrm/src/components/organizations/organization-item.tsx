@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Building2, Trash2, Globe, Mail, MapPin, Users } from "lucide-react"
+import { Building2, Trash2, Globe, Mail, MapPin, Users, Edit } from "lucide-react"
 
 interface Organization {
   id: number
@@ -19,9 +19,10 @@ interface Organization {
 interface OrganizationItemProps {
   organization: Organization
   onDelete: (id: number) => void
+  onEdit: (organization: Organization) => void
 }
 
-export function OrganizationItem({ organization, onDelete }: OrganizationItemProps) {
+export function OrganizationItem({ organization, onDelete, onEdit }: OrganizationItemProps) {
   return (
     <Card>
       <CardContent className="p-6">
@@ -35,7 +36,7 @@ export function OrganizationItem({ organization, onDelete }: OrganizationItemPro
               <div className="flex items-center gap-2 flex-wrap">
                 <h4 className="font-semibold text-lg">{organization.name}</h4>
                 {organization.industry && <Badge variant="outline">{organization.industry}</Badge>}
-                {organization.employee_count !== undefined && (
+                {organization.employee_count !== undefined && organization.employee_count > 0 && (
                   <Badge variant="secondary" className="flex items-center gap-1">
                     <Users className="h-3 w-3" />
                     {organization.employee_count}
@@ -75,9 +76,14 @@ export function OrganizationItem({ organization, onDelete }: OrganizationItemPro
             </div>
           </div>
 
-          <Button variant="destructive" size="sm" onClick={() => onDelete(organization.id)}>
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => onEdit(organization)}>
+              <Edit className="h-4 w-4" />
+            </Button>
+            <Button variant="destructive" size="sm" onClick={() => onDelete(organization.id)}>
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

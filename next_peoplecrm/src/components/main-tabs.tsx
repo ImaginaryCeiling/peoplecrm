@@ -9,9 +9,10 @@ import { useEvents, usePeople, useOrganizations } from "@/hooks/use-data"
 
 interface MainTabsProps {
   onAddNew: (type: string) => void
+  onEdit: (type: string, item: any) => void
 }
 
-export function MainTabs({ onAddNew }: MainTabsProps) {
+export function MainTabs({ onAddNew, onEdit }: MainTabsProps) {
   const { events, loading: eventsLoading, error: eventsError, deleteEvent } = useEvents()
   const { people, loading: peopleLoading, error: peopleError, deletePerson } = usePeople()
   const { organizations, loading: orgsLoading, error: orgsError, deleteOrganization } = useOrganizations()
@@ -40,6 +41,7 @@ export function MainTabs({ onAddNew }: MainTabsProps) {
           error={eventsError}
           onDelete={deleteEvent}
           onAddNew={() => onAddNew("event")}
+          onEdit={(event) => onEdit("event", event)}
         />
       </TabsContent>
 
@@ -50,6 +52,7 @@ export function MainTabs({ onAddNew }: MainTabsProps) {
           error={peopleError}
           onDelete={deletePerson}
           onAddNew={() => onAddNew("person")}
+          onEdit={(person) => onEdit("person", person)}
         />
       </TabsContent>
 
@@ -60,6 +63,7 @@ export function MainTabs({ onAddNew }: MainTabsProps) {
           error={orgsError}
           onDelete={deleteOrganization}
           onAddNew={() => onAddNew("organization")}
+          onEdit={(organization) => onEdit("organization", organization)}
         />
       </TabsContent>
     </Tabs>

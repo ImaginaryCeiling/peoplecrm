@@ -61,7 +61,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   
   const { userId } = await auth();
   if (!userId) {
@@ -69,17 +69,42 @@ export async function GET() {
   }
 
   try {
-    const { data: contacts, error } = await supabaseAdmin
-    .from('contacts')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
 
-    if (error) {
-      console.log("Error fetching contacts: "+error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    if (id) {
+      // Fetch single contact by ID
+      const { data: contact, error } = await supabaseAdmin
+        .from('contacts')
+        .select('*')
+        .eq('id', id)
+        .eq('user_id', userId)
+        .single();
+
+      if (error) {
+        console.log("Error fetching contact: "+error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+
+      if (!contact) {
+        return NextResponse.json({ error: 'Contact not found' }, { status: 404 });
+      }
+
+      return NextResponse.json(contact);
+    } else {
+      // Fetch all contacts
+      const { data: contacts, error } = await supabaseAdmin
+        .from('contacts')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.log("Error fetching contacts: "+error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+      return NextResponse.json(contacts);
     }
-    return NextResponse.json(contacts);
   } catch (error) {
     console.log("Error fetching contacts: "+error);
     return NextResponse.json({ error: "Failed to fetch contacts" }, { status: 500 });

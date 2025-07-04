@@ -4,20 +4,19 @@ import { auth } from '@clerk/nextjs/server';
 
 
 interface EventUpdate {
-    eventName: string;
-    eventDate: string;
-    eventLocation: string;
-    eventDescription: string;
-    eventOrganizer: string;
+    event_name?: string;
+    event_date?: string;
+    event_location?: string;
+    event_description?: string;
+    event_organizer?: string;
+    updated_at: string;
 }
 
 export async function POST(request: Request) {
-    /*const { userId } = await auth();
+    const { userId } = await auth();
     if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }*/
-
-    const userId = '123';
+    }
 
     try {
         const body = await request.json();
@@ -29,11 +28,11 @@ export async function POST(request: Request) {
 
         const { data, error } = await supabaseAdmin.from('events').insert({
             user_id: userId,
-            eventName,
-            eventDate,
-            eventLocation,
-            eventDescription,
-            eventOrganizer
+            event_name: eventName,
+            event_date: eventDate,
+            event_location: eventLocation,
+            event_description: eventDescription,
+            event_organizer: eventOrganizer
             
         }).select();
 
@@ -48,20 +47,44 @@ export async function POST(request: Request) {
     }
 }
 
-export async function GET(){
+export async function GET(request: Request){
     const { userId } = await auth();
     if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     try {
-        const { data: events, error } = await supabaseAdmin.from('events').select('*').eq('user_id', userId);
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get('id');
 
-        if (error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
+        if (id) {
+            // Fetch single event by ID
+            const { data: event, error } = await supabaseAdmin
+                .from('events')
+                .select('*')
+                .eq('id', id)
+                .eq('user_id', userId)
+                .single();
+
+            if (error) {
+                return NextResponse.json({ error: error.message }, { status: 500 });
+            }
+
+            if (!event) {
+                return NextResponse.json({ error: 'Event not found' }, { status: 404 });
+            }
+
+            return NextResponse.json(event);
+        } else {
+            // Fetch all events
+            const { data: events, error } = await supabaseAdmin.from('events').select('*').eq('user_id', userId);
+
+            if (error) {
+                return NextResponse.json({ error: error.message }, { status: 500 });
+            }
+
+            return NextResponse.json(events);
         }
-
-        return NextResponse.json(events);
     } catch (error){
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
@@ -103,11 +126,11 @@ export async function PUT(request: Request){
         }
 
         const updates: EventUpdate = {
-            ...(eventName && eventName.trim() !== '' && { eventName }),
-            ...(eventDate && eventDate.trim() !== '' && { eventDate }),
-            ...(eventLocation && eventLocation.trim() !== '' && { eventLocation }),
-            ...(eventDescription && eventDescription.trim() !== '' && { eventDescription }),
-            ...(eventOrganizer && eventOrganizer.trim() !== '' && { eventOrganizer }),
+            ...(eventName && eventName.trim() !== '' && { event_name: eventName }),
+            ...(eventDate && eventDate.trim() !== '' && { event_date: eventDate }),
+            ...(eventLocation && eventLocation.trim() !== '' && { event_location: eventLocation }),
+            ...(eventDescription && eventDescription.trim() !== '' && { event_description: eventDescription }),
+            ...(eventOrganizer && eventOrganizer.trim() !== '' && { event_organizer: eventOrganizer }),
             updated_at: new Date().toISOString(),
         };
 

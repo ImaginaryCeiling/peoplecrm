@@ -88,19 +88,59 @@ export function useEvents() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setEvents(mockEvents)
+  const fetchEvents = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const response = await fetch('/api/event')
+      if (!response.ok) {
+        throw new Error('Failed to fetch events')
+      }
+      const data = await response.json()
+      // Transform database fields to match UI interface
+      const transformedEvents = data.map((event: any) => ({
+        id: event.id,
+        eventName: event.event_name,
+        eventDate: event.event_date,
+        eventLocation: event.event_location,
+        eventDescription: event.event_description,
+        eventOrganizer: event.event_organizer
+      }))
+      setEvents(transformedEvents)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch events')
+    } finally {
       setLoading(false)
-    }, 500)
-  }, [])
-
-  const deleteEvent = (id: number) => {
-    setEvents(events.filter(event => event.id !== id))
+    }
   }
 
-  return { events, loading, error, deleteEvent }
+  useEffect(() => {
+    fetchEvents()
+  }, [])
+
+  const deleteEvent = async (id: number) => {
+    try {
+      setError(null)
+      const response = await fetch('/api/event', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to delete event')
+      }
+      
+      setEvents(events.filter(event => event.id !== id))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete event')
+    }
+  }
+
+  return { events, loading, error, deleteEvent, refetch: fetchEvents }
 }
 
 export function usePeople() {
@@ -108,19 +148,50 @@ export function usePeople() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setPeople(mockPeople)
+  const fetchPeople = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const response = await fetch('/api/people')
+      if (!response.ok) {
+        throw new Error('Failed to fetch people')
+      }
+      const data = await response.json()
+      setPeople(data)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch people')
+    } finally {
       setLoading(false)
-    }, 500)
-  }, [])
-
-  const deletePerson = (id: number) => {
-    setPeople(people.filter(person => person.id !== id))
+    }
   }
 
-  return { people, loading, error, deletePerson }
+  useEffect(() => {
+    fetchPeople()
+  }, [])
+
+  const deletePerson = async (id: number) => {
+    try {
+      setError(null)
+      const response = await fetch('/api/people', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to delete person')
+      }
+      
+      setPeople(people.filter(person => person.id !== id))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete person')
+    }
+  }
+
+  return { people, loading, error, deletePerson, refetch: fetchPeople }
 }
 
 export function useOrganizations() {
@@ -128,17 +199,48 @@ export function useOrganizations() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setOrganizations(mockOrganizations)
+  const fetchOrganizations = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const response = await fetch('/api/organization')
+      if (!response.ok) {
+        throw new Error('Failed to fetch organizations')
+      }
+      const data = await response.json()
+      setOrganizations(data)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch organizations')
+    } finally {
       setLoading(false)
-    }, 500)
-  }, [])
-
-  const deleteOrganization = (id: number) => {
-    setOrganizations(organizations.filter(org => org.id !== id))
+    }
   }
 
-  return { organizations, loading, error, deleteOrganization }
+  useEffect(() => {
+    fetchOrganizations()
+  }, [])
+
+  const deleteOrganization = async (id: number) => {
+    try {
+      setError(null)
+      const response = await fetch('/api/organization', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to delete organization')
+      }
+      
+      setOrganizations(organizations.filter(org => org.id !== id))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete organization')
+    }
+  }
+
+  return { organizations, loading, error, deleteOrganization, refetch: fetchOrganizations }
 } 

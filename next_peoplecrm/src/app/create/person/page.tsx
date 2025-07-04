@@ -57,6 +57,11 @@ export default function AddPerson() {
       setPhone("");
       setAddress("");
       setNotes("");
+      
+      // Redirect back to dashboard after successful creation
+      setTimeout(() => {
+        window.location.href = '/home';
+      }, 1500);
     } catch (error) {
       // Update the message state with the error message
       setMessage(error instanceof Error ? error.message : "Failed to add person");

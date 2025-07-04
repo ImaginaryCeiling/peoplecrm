@@ -48,7 +48,7 @@ export default function AddEvent() {
 
       const data = await response.json(); // Parse the successful response
       setMessage("Event added successfully"); // Update the message state to indicate success
-      console.log(data.eventName+" added successfully"); // Log the success message
+      console.log(data.event_name+" added successfully"); // Log the success message
       
       // Clear the form inputs by resetting their state
       setEventName("");
@@ -56,6 +56,11 @@ export default function AddEvent() {
       setEventLocation("");
       setEventDescription("");
       setEventOrganizer("");
+      
+      // Redirect back to dashboard after successful creation
+      setTimeout(() => {
+        window.location.href = '/home';
+      }, 1500);
     } catch (error) {
       console.error(error); // Add this line
       // Update the message state with the error message

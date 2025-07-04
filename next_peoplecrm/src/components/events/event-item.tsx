@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Trash2, Calendar, MapPin, User } from "lucide-react"
+import { Trash2, Calendar, MapPin, User, Edit } from "lucide-react"
 
 interface Event {
   id: number
@@ -12,14 +12,15 @@ interface Event {
   eventLocation?: string
   eventDescription?: string
   eventOrganizer?: string
-}
+}   
 
 interface EventItemProps {
   event: Event
   onDelete: (id: number) => void
+  onEdit: (event: Event) => void
 }
 
-export function EventItem({ event, onDelete }: EventItemProps) {
+export function EventItem({ event, onDelete, onEdit }: EventItemProps) {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -59,9 +60,14 @@ export function EventItem({ event, onDelete }: EventItemProps) {
             </div>
           </div>
 
-          <Button variant="destructive" size="sm" onClick={() => onDelete(event.id)}>
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => onEdit(event)}>
+              <Edit className="h-4 w-4" />
+            </Button>
+            <Button variant="destructive" size="sm" onClick={() => onDelete(event.id)}>
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

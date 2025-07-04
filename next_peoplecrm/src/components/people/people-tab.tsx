@@ -23,9 +23,10 @@ interface PeopleTabProps {
   error: string | null
   onDelete: (id: number) => void
   onAddNew: () => void
+  onEdit: (person: Person) => void
 }
 
-export function PeopleTab({ people, loading, error, onDelete, onAddNew }: PeopleTabProps) {
+export function PeopleTab({ people, loading, error, onDelete, onAddNew, onEdit }: PeopleTabProps) {
   if (loading) return <LoadingSpinner />
   if (error) return <ErrorMessage message={error} />
 
@@ -33,14 +34,14 @@ export function PeopleTab({ people, loading, error, onDelete, onAddNew }: People
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="text-xl font-semibold">People</h3>
-        <Button onClick={onAddNew} className="flex items-center gap-2">
+        <Button onClick={() => window.location.href = '/create/person'} className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
           Add New Person
         </Button>
       </div>
       <div className="grid gap-4">
         {people.length > 0 ? (
-          people.map((person) => <PersonItem key={person.id} person={person} onDelete={onDelete} />)
+          people.map((person) => <PersonItem key={person.id} person={person} onDelete={onDelete} onEdit={onEdit} />)
         ) : (
           <EmptyState message="No people found. Add your first contact!" />
         )}

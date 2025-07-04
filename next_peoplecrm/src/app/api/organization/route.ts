@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
     
     const { userId } = await auth();
     if (!userId) {
@@ -62,23 +62,45 @@ export async function GET() {
     }
 
     try {
-        const { data: organizations, error } = await supabaseAdmin
-        .from('organizations')
-        .select(`
-            *,
-            employee_count:contacts(count)
-        `)
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get('id');
 
-        if (error) {
-            console.log("Error fetching organizations: "+error);
-            return NextResponse.json({ error: error.message }, { status: 500 });
+        if (id) {
+            // Fetch single organization by ID
+            const { data: organization, error } = await supabaseAdmin
+                .from('organizations')
+                .select('*')
+                .eq('id', id)
+                .eq('user_id', userId)
+                .single();
+
+            if (error) {
+                console.log("Error fetching organization:", error);
+                return NextResponse.json({ error: error.message }, { status: 500 });
+            }
+
+            if (!organization) {
+                return NextResponse.json({ error: 'Organization not found' }, { status: 404 });
+            }
+
+            return NextResponse.json(organization);
+        } else {
+            // Fetch all organizations
+            const { data: organizations, error } = await supabaseAdmin
+                .from('organizations')
+                .select('*')
+                .eq('user_id', userId)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.log("Error fetching organizations:", error);
+                return NextResponse.json({ error: error.message }, { status: 500 });
+            }
+
+            return NextResponse.json(organizations);
         }
-
-        return NextResponse.json(organizations);
     } catch (error) {
-        console.log("Error fetching organizations: "+error);
+        console.log("Error fetching organizations:", error);
         return NextResponse.json({ error: "Failed to fetch organizations" }, { status: 500 });
     }
 }
@@ -173,19 +195,7 @@ export async function PATCH(request: Request) {
 
         const { data: organization, error } = await supabaseAdmin
         .from('organizations')
-        .select(`
-            *,
-            employee_count:contacts(count),
-            employees:contacts(
-                id,
-                name,
-                email,
-                phone,
-                address,
-                notes,
-                created_at
-            )
-        `)
+        .select('*')
         .eq('id', id)
         .eq('user_id', userId)
         .single();

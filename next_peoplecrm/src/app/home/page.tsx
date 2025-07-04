@@ -11,6 +11,23 @@ export default function Dashboard() {
     console.log(`Add new ${type}`)
   }
 
+  const handleEdit = (type: string, item: any) => {
+    // Navigate to edit page based on type
+    switch (type) {
+      case 'person':
+        window.location.href = `/edit/person?id=${item.id}`;
+        break;
+      case 'event':
+        window.location.href = `/edit/event?id=${item.id}`;
+        break;
+      case 'organization':
+        window.location.href = `/edit/organization?id=${item.id}`;
+        break;
+      default:
+        console.log(`Edit ${type}:`, item);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -18,7 +35,7 @@ export default function Dashboard() {
       <div className="container mx-auto px-4 py-8">
         <WelcomeSection />
         <ProfileSection />
-        <MainTabs onAddNew={handleAddNew} />
+        <MainTabs onAddNew={handleAddNew} onEdit={handleEdit} />
       </div>
     </div>
   )

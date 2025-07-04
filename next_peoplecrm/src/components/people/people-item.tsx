@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Trash2, Mail, Phone, MapPin } from "lucide-react"
+import { Trash2, Mail, Phone, MapPin, Edit } from "lucide-react"
 
 interface Person {
   id: number
@@ -19,9 +19,10 @@ interface Person {
 interface PersonItemProps {
   person: Person
   onDelete: (id: number) => void
+  onEdit: (person: Person) => void
 }
 
-export function PersonItem({ person, onDelete }: PersonItemProps) {
+export function PersonItem({ person, onDelete, onEdit }: PersonItemProps) {
   return (
     <Card>
       <CardContent className="p-6">
@@ -68,9 +69,14 @@ export function PersonItem({ person, onDelete }: PersonItemProps) {
             </div>
           </div>
 
-          <Button variant="destructive" size="sm" onClick={() => onDelete(person.id)}>
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => onEdit(person)}>
+              <Edit className="h-4 w-4" />
+            </Button>
+            <Button variant="destructive" size="sm" onClick={() => onDelete(person.id)}>
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
