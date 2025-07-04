@@ -6,10 +6,7 @@ import { EventsTab } from "./events/event-tab"
 import { PeopleTab } from "./people/people-tab"
 import { OrganizationsTab } from "./organizations/organization-tab"
 import { useEvents, usePeople, useOrganizations } from "@/hooks/use-data"
-
-interface EditableItem {
-  id: number;
-}
+import type { EditableItem } from "@/types/user"
 
 interface MainTabsProps {
   onAddNew: (type: string) => void
