@@ -2,20 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
-import { PersonItem } from "./people-item"
+import { PersonItem, Person } from "./people-item"
 import { EmptyState } from "../empty-state"
 import { LoadingSpinner } from "../loader-spinner"
 import { ErrorMessage } from "../error-message"
-
-interface Person {
-  id: number
-  name: string
-  email?: string
-  phone?: string
-  address?: string
-  organization_id?: number | null
-  notes?: string
-}
 
 interface PeopleTabProps {
   people: Person[]

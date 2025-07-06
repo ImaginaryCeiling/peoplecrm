@@ -20,6 +20,13 @@ interface Person {
   person_role?: string
   person_linkedin?: string
   person_notes?: string
+  organization_id?: number | null
+  organizations?: {
+    id: number
+    organization_name: string
+    organization_industry?: string
+    organization_location?: string
+  }
 }
 
 interface Organization {

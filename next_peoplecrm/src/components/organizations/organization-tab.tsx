@@ -2,21 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
-import { OrganizationItem } from "./organization-item"
+import { OrganizationItem, Organization } from "./organization-item"
 import { EmptyState } from "../empty-state"
 import { LoadingSpinner } from "../loader-spinner"
 import { ErrorMessage } from "../error-message"
-
-interface Organization {
-  id: number
-  name: string
-  industry?: string
-  location?: string
-  website?: string
-  contact_email?: string
-  notes?: string
-  employee_count?: number
-}
 
 interface OrganizationsTabProps {
   organizations: Organization[]

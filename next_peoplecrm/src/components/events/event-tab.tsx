@@ -2,19 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
-import { EventItem } from "./event-item"
+import { EventItem, Event } from "./event-item"
 import { EmptyState } from "@/components/empty-state"
 import { LoadingSpinner } from "@/components/loader-spinner"
 import { ErrorMessage } from "@/components/error-message"
-
-interface Event {
-  id: number
-  eventName: string
-  eventDate: string
-  eventLocation?: string
-  eventDescription?: string
-  eventOrganizer?: string
-}
 
 interface EventsTabProps {
   events: Event[]
