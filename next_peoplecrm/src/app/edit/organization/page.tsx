@@ -6,12 +6,12 @@ import Header from "@/components/header";
 
 interface Organization {
   id: number;
-  name: string;
-  industry?: string;
-  location?: string;
-  website?: string;
-  contact_email?: string;
-  notes?: string;
+  organization_name: string;
+  organization_industry?: string;
+  organization_location?: string;
+  organization_website?: string;
+  organization_contact_email?: string;
+  organization_notes?: string;
 }
 
 function EditOrganizationContent() {
@@ -34,12 +34,12 @@ function EditOrganizationContent() {
         throw new Error('Failed to fetch organization');
       }
       const organization: Organization = await response.json();
-      setOrgName(organization.name || "");
-      setIndustry(organization.industry || "");
-      setLocation(organization.location || "");
-      setWebsite(organization.website || "");
-      setContactEmail(organization.contact_email || "");
-      setNotes(organization.notes || "");
+      setOrgName(organization.organization_name || "");
+      setIndustry(organization.organization_industry || "");
+      setLocation(organization.organization_location || "");
+      setWebsite(organization.organization_website || "");
+      setContactEmail(organization.organization_contact_email || "");
+      setNotes(organization.organization_notes || "");
       setMessage("Ready to edit");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Failed to fetch organization");
@@ -82,7 +82,7 @@ function EditOrganizationContent() {
 
       const data = await response.json();
       setMessage("Organization updated successfully");
-      console.log(data.name + " updated successfully");
+      console.log(data.organization_name + " updated successfully");
       
       // Redirect back to dashboard after successful update
       setTimeout(() => {

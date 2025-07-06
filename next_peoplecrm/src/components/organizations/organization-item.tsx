@@ -3,17 +3,16 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Building2, Trash2, Globe, Mail, MapPin, Users, Edit } from "lucide-react"
+import { Building2, Trash2, Globe, Mail, MapPin, Edit } from "lucide-react"
 
 export interface Organization {
   id: number
-  name: string
-  industry?: string
-  location?: string
-  website?: string
-  contact_email?: string
-  notes?: string
-  employee_count?: number
+  organization_name: string
+  organization_industry?: string
+  organization_location?: string
+  organization_website?: string
+  organization_contact_email?: string
+  organization_notes?: string
 }
 
 interface OrganizationItemProps {
@@ -34,54 +33,60 @@ export function OrganizationItem({ organization, onDelete, onEdit }: Organizatio
 
             <div className="flex-1 space-y-2">
               <div className="flex items-center gap-2 flex-wrap">
-                <h4 className="font-semibold text-lg">{organization.name}</h4>
-                {organization.industry && <Badge variant="outline">{organization.industry}</Badge>}
-                {organization.employee_count !== undefined && organization.employee_count > 0 && (
-                  <Badge variant="secondary" className="flex items-center gap-1">
-                    <Users className="h-3 w-3" />
-                    {organization.employee_count}
-                  </Badge>
-                )}
+                <h4 className="font-semibold text-lg">{organization.organization_name}</h4>
+                {organization.organization_industry && <Badge variant="outline">{organization.organization_industry}</Badge>}
               </div>
 
               <div className="space-y-1 text-sm text-muted-foreground">
-                {organization.contact_email && (
+                {organization.organization_contact_email && (
                   <div className="flex items-center gap-2">
                     <Mail className="h-3 w-3" />
-                    {organization.contact_email}
+                    {organization.organization_contact_email}
                   </div>
                 )}
-                {organization.website && (
+                {organization.organization_website && (
                   <div className="flex items-center gap-2">
                     <Globe className="h-3 w-3" />
                     <a
-                      href={organization.website}
+                      href={organization.organization_website}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:underline"
                     >
-                      {organization.website}
+                      {organization.organization_website}
                     </a>
                   </div>
                 )}
-                {organization.location && (
+                {organization.organization_location && (
                   <div className="flex items-center gap-2">
                     <MapPin className="h-3 w-3" />
-                    {organization.location}
+                    {organization.organization_location}
                   </div>
                 )}
               </div>
 
-              {organization.notes && <p className="text-sm text-muted-foreground italic">{organization.notes}</p>}
+              {organization.organization_notes && <p className="text-sm text-muted-foreground italic">{organization.organization_notes}</p>}
             </div>
           </div>
 
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={() => onEdit(organization)}>
-              <Edit className="h-4 w-4" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onEdit(organization)}
+              className="flex items-center gap-1"
+            >
+              <Edit className="h-3 w-3" />
+              Edit
             </Button>
-            <Button variant="destructive" size="sm" onClick={() => onDelete(organization.id)}>
-              <Trash2 className="h-4 w-4" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onDelete(organization.id)}
+              className="flex items-center gap-1 text-red-600 hover:text-red-700"
+            >
+              <Trash2 className="h-3 w-3" />
+              Delete
             </Button>
           </div>
         </div>

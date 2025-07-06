@@ -6,12 +6,27 @@ import Header from "@/components/header";
 
 interface Person {
   id: number;
-  name: string;
-  email?: string;
-  phone?: string;
-  address?: string;
+  person_name: string;
+  person_email?: string;
+  person_phone?: string;
+  person_location?: string;
+  person_role?: string;
+  person_linkedin?: string;
+  person_notes?: string;
   organization_id?: number | null;
-  notes?: string;
+  organizations?: {
+    id: number;
+    organization_name: string;
+    organization_industry?: string;
+    organization_location?: string;
+  };
+}
+
+interface Organization {
+  id: number;
+  organization_name: string;
+  organization_industry?: string;
+  organization_location?: string;
 }
 
 function EditPersonContent() {
@@ -21,10 +36,27 @@ function EditPersonContent() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
+  const [location, setLocation] = useState("");
+  const [role, setRole] = useState("");
+  const [linkedin, setLinkedin] = useState("");
   const [notes, setNotes] = useState("");
-  const [message, setMessage] = useState("Loading...");
+  const [organization_id, setOrganizationId] = useState("");
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("Loading...");
+
+  // Fetch organizations
+  const fetchOrganizations = useCallback(async () => {
+    try {
+      const response = await fetch('/api/organization');
+      if (response.ok) {
+        const data = await response.json();
+        setOrganizations(data);
+      }
+    } catch (error) {
+      console.error('Error fetching organizations:', error);
+    }
+  }, []);
 
   const fetchPerson = useCallback(async () => {
     try {
@@ -33,11 +65,14 @@ function EditPersonContent() {
         throw new Error('Failed to fetch person');
       }
       const person: Person = await response.json();
-      setName(person.name || "");
-      setEmail(person.email || "");
-      setPhone(person.phone || "");
-      setAddress(person.address || "");
-      setNotes(person.notes || "");
+      setName(person.person_name || "");
+      setEmail(person.person_email || "");
+      setPhone(person.person_phone || "");
+      setLocation(person.person_location || "");
+      setRole(person.person_role || "");
+      setLinkedin(person.person_linkedin || "");
+      setNotes(person.person_notes || "");
+      setOrganizationId(person.organization_id?.toString() || "");
       setMessage("Ready to edit");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Failed to fetch person");
@@ -48,9 +83,10 @@ function EditPersonContent() {
 
   useEffect(() => {
     if (id) {
+      fetchOrganizations();
       fetchPerson();
     }
-  }, [id, fetchPerson]);
+  }, [id, fetchPerson, fetchOrganizations]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,8 +103,11 @@ function EditPersonContent() {
           name,
           email,
           phone,
-          address,
+          location,
+          role,
+          linkedin,
           notes,
+          organization_id: organization_id || null,
         }),
       });
 
@@ -79,7 +118,7 @@ function EditPersonContent() {
 
       const data = await response.json();
       setMessage("Person updated successfully");
-      console.log(data.name + " updated successfully");
+      console.log(data.person_name + " updated successfully");
       
       // Redirect back to dashboard after successful update
       setTimeout(() => {
@@ -106,7 +145,7 @@ function EditPersonContent() {
       <h1 className="text-2xl font-bold mb-6">Edit Person</h1>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="flex flex-col">
-          <label htmlFor="name" className="mb-1">Name</label>
+          <label htmlFor="name" className="mb-1">Name *</label>
           <input
             id="name"
             type="text"
@@ -116,6 +155,22 @@ function EditPersonContent() {
             placeholder="Enter name"
             required
           />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="organization" className="mb-1">Organization</label>
+          <select
+            id="organization"
+            value={organization_id}
+            onChange={(e) => setOrganizationId(e.target.value)}
+            className="border rounded p-2"
+          >
+            <option value="">Select an organization (optional)</option>
+            {organizations.map((org) => (
+              <option key={org.id} value={org.id}>
+                {org.organization_name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col">
           <label htmlFor="email" className="mb-1">Email</label>
@@ -140,14 +195,36 @@ function EditPersonContent() {
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="address" className="mb-1">Address</label>
+          <label htmlFor="location" className="mb-1">Location</label>
           <input
-            id="address"
+            id="location"
             type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
             className="border rounded p-2"
-            placeholder="Enter address"
+            placeholder="Enter location"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="role" className="mb-1">Role</label>
+          <input
+            id="role"
+            type="text"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="border rounded p-2"
+            placeholder="Enter role/title"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="linkedin" className="mb-1">LinkedIn</label>
+          <input
+            id="linkedin"
+            type="url"
+            value={linkedin}
+            onChange={(e) => setLinkedin(e.target.value)}
+            className="border rounded p-2"
+            placeholder="Enter LinkedIn URL"
           />
         </div>
         <div className="flex flex-col">

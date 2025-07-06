@@ -2,14 +2,14 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseClient';
 import { auth } from '@clerk/nextjs/server';
 
-
 interface OrganizationUpdate {
-    name?: string;
-    industry?: string;
-    location?: string;
-    website?: string;
-    contact_email?: string;
-    notes?: string;
+    organization_name?: string;
+    organization_logo?: string;
+    organization_industry?: string;
+    organization_location?: string;
+    organization_website?: string;
+    organization_contact_email?: string;
+    organization_notes?: string;
     updated_at: string;
 }
 
@@ -33,12 +33,12 @@ export async function POST(request: Request) {
 
         const { data, error } = await supabaseAdmin.from('organizations').insert({
             user_id: userId,
-            name: orgName,
-            industry,
-            location,
-            website,
-            contact_email: contactEmail,
-            notes
+            organization_name: orgName,
+            organization_industry: industry,
+            organization_location: location,
+            organization_website: website,
+            organization_contact_email: contactEmail,
+            organization_notes: notes
         }).select();
 
         if (error) {
@@ -147,12 +147,12 @@ export async function PUT(request: Request) {
         }
 
         const updates: OrganizationUpdate = {
-            ...(name && name.trim() !== '' && { name }),
-            ...(industry && industry.trim() !== '' && { industry }),
-            ...(location && location.trim() !== '' && { location }),
-            ...(website && website.trim() !== '' && { website }),
-            ...(contactEmail && contactEmail.trim() !== '' && { contact_email: contactEmail }),
-            ...(notes && notes.trim() !== '' && { notes }),
+            ...(name && name.trim() !== '' && { organization_name: name }),
+            ...(industry && industry.trim() !== '' && { organization_industry: industry }),
+            ...(location && location.trim() !== '' && { organization_location: location }),
+            ...(website && website.trim() !== '' && { organization_website: website }),
+            ...(contactEmail && contactEmail.trim() !== '' && { organization_contact_email: contactEmail }),
+            ...(notes && notes.trim() !== '' && { organization_notes: notes }),
             updated_at: new Date().toISOString(),
         };
 

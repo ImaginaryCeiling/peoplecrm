@@ -3,32 +3,33 @@ import { useState, useEffect } from 'react'
 // Mock data types
 interface Event {
   id: number
-  eventName: string
-  eventDate: string
-  eventDescription?: string
-  eventLocation?: string
-  eventOrganizer?: string
+  event_name: string
+  event_date: string
+  event_location?: string
+  event_description?: string
+  event_organizer?: string
+  event_notes?: string
 }
 
 interface Person {
   id: number
-  name: string
-  email?: string
-  phone?: string
-  address?: string
-  organization_id?: number | null
-  notes?: string
+  person_name: string
+  person_email?: string
+  person_phone?: string
+  person_location?: string
+  person_role?: string
+  person_linkedin?: string
+  person_notes?: string
 }
 
 interface Organization {
   id: number
-  name: string
-  industry?: string
-  location?: string
-  website?: string
-  contact_email?: string
-  notes?: string
-  employee_count?: number
+  organization_name: string
+  organization_industry?: string
+  organization_location?: string
+  organization_website?: string
+  organization_contact_email?: string
+  organization_notes?: string
 }
 
 interface DatabaseEvent {
@@ -44,53 +45,98 @@ interface DatabaseEvent {
 const mockEvents: Event[] = [
   {
     id: 1,
-    eventName: 'Team Meeting',
-    eventDate: '2024-01-15',
-    eventDescription: 'Weekly team sync',
-    eventLocation: 'Conference Room A'
+    event_name: 'Team Meeting',
+    event_date: '2024-01-15',
+    event_description: 'Weekly team sync',
+    event_location: 'Conference Room A'
   },
   {
     id: 2,
-    eventName: 'Client Call',
-    eventDate: '2024-01-16',
-    eventDescription: 'Follow up with client',
-    eventOrganizer: 'John Doe'
+    event_name: 'Client Call',
+    event_date: '2024-01-16',
+    event_description: 'Follow up with client',
+    event_organizer: 'John Doe'
   }
 ]
 
 const mockPeople: Person[] = [
   {
     id: 1,
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '+1-555-0123',
-    notes: 'Met at conference'
+    person_name: 'John Doe',
+    person_email: 'john@example.com',
+    person_phone: '+1-555-0123',
+    person_notes: 'Met at conference'
   },
   {
     id: 2,
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    phone: '+1-555-0456',
-    notes: 'Potential client'
+    person_name: 'Jane Smith',
+    person_email: 'jane@example.com',
+    person_phone: '+1-555-0456',
+    person_notes: 'Potential client'
   }
 ]
 
 const mockOrganizations: Organization[] = [
   {
     id: 1,
-    name: 'Tech Corp',
-    industry: 'Software',
-    website: 'https://techcorp.com',
-    contact_email: 'contact@techcorp.com'
+    organization_name: 'Tech Corp',
+    organization_industry: 'Software',
+    organization_website: 'https://techcorp.com',
+    organization_contact_email: 'contact@techcorp.com'
   },
   {
     id: 2,
-    name: 'Design Studio',
-    industry: 'Creative',
-    website: 'https://designstudio.com',
-    contact_email: 'hello@designstudio.com'
+    organization_name: 'Design Studio',
+    organization_industry: 'Creative',
+    organization_website: 'https://designstudio.com',
+    organization_contact_email: 'hello@designstudio.com'
   }
 ]
+
+export function useData() {
+  const [people, setPeople] = useState<Person[]>([])
+  const [organizations, setOrganizations] = useState<Organization[]>([])
+  const [events, setEvents] = useState<Event[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        
+        // Fetch people
+        const peopleResponse = await fetch('/api/people')
+        if (peopleResponse.ok) {
+          const peopleData = await peopleResponse.json()
+          setPeople(peopleData)
+        }
+
+        // Fetch organizations
+        const organizationsResponse = await fetch('/api/organization')
+        if (organizationsResponse.ok) {
+          const organizationsData = await organizationsResponse.json()
+          setOrganizations(organizationsData)
+        }
+
+        // Fetch events
+        const eventsResponse = await fetch('/api/event')
+        if (eventsResponse.ok) {
+          const eventsData = await eventsResponse.json()
+          setEvents(eventsData)
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch data')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  return { people, organizations, events, loading, error }
+}
 
 export function useEvents() {
   const [events, setEvents] = useState<Event[]>([])
@@ -109,11 +155,11 @@ export function useEvents() {
       // Transform database fields to match UI interface
       const transformedEvents = data.map((event: DatabaseEvent) => ({
         id: event.id,
-        eventName: event.event_name,
-        eventDate: event.event_date,
-        eventLocation: event.event_location,
-        eventDescription: event.event_description,
-        eventOrganizer: event.event_organizer
+        event_name: event.event_name,
+        event_date: event.event_date,
+        event_location: event.event_location,
+        event_description: event.event_description,
+        event_organizer: event.event_organizer
       }))
       setEvents(transformedEvents)
     } catch (err) {

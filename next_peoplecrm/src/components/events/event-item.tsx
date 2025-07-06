@@ -7,11 +7,12 @@ import { Trash2, Calendar, MapPin, User, Edit } from "lucide-react"
 
 export interface Event {
   id: number
-  eventName: string
-  eventDate: string
-  eventLocation?: string
-  eventDescription?: string
-  eventOrganizer?: string
+  event_name: string
+  event_date: string
+  event_location?: string
+  event_description?: string
+  event_organizer?: string
+  event_notes?: string
 }
 
 interface EventItemProps {
@@ -35,37 +36,51 @@ export function EventItem({ event, onDelete, onEdit }: EventItemProps) {
         <div className="flex items-start justify-between">
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
-              <h4 className="font-semibold text-lg">{event.eventName}</h4>
+              <h4 className="font-semibold text-lg">{event.event_name}</h4>
               <Badge variant="outline" className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
-                {formatDate(event.eventDate)}
+                {formatDate(event.event_date)}
               </Badge>
             </div>
 
-            {event.eventDescription && <p className="text-muted-foreground">{event.eventDescription}</p>}
+            {event.event_description && <p className="text-muted-foreground">{event.event_description}</p>}
 
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-              {event.eventLocation && (
+              {event.event_location && (
                 <div className="flex items-center gap-1">
                   <MapPin className="h-3 w-3" />
-                  {event.eventLocation}
+                  {event.event_location}
                 </div>
               )}
-              {event.eventOrganizer && (
+              {event.event_organizer && (
                 <div className="flex items-center gap-1">
                   <User className="h-3 w-3" />
-                  {event.eventOrganizer}
+                  {event.event_organizer}
                 </div>
               )}
             </div>
+
+            {event.event_notes && <p className="text-sm text-muted-foreground italic">{event.event_notes}</p>}
           </div>
 
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={() => onEdit(event)}>
-              <Edit className="h-4 w-4" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onEdit(event)}
+              className="flex items-center gap-1"
+            >
+              <Edit className="h-3 w-3" />
+              Edit
             </Button>
-            <Button variant="destructive" size="sm" onClick={() => onDelete(event.id)}>
-              <Trash2 className="h-4 w-4" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onDelete(event.id)}
+              className="flex items-center gap-1 text-red-600 hover:text-red-700"
+            >
+              <Trash2 className="h-3 w-3" />
+              Delete
             </Button>
           </div>
         </div>

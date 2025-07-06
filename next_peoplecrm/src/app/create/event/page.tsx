@@ -87,6 +87,17 @@ export default function AddEvent() {
           />
         </div>
         <div className="flex flex-col">
+          <label htmlFor="eventOrganizer" className="mb-1">Event Organizer</label> {/* Label for the event organizer input */}
+          <input
+            id="eventOrganizer"
+            type="text"
+            value={eventOrganizer} // Bind the input value to the eventOrganizer state
+            onChange={(e) => setEventOrganizer(e.target.value)} // Update the eventOrganizer state on change
+            className="border rounded p-2"
+            placeholder="Enter event organizer" // Placeholder text for the input
+          />
+        </div>
+        <div className="flex flex-col">
           <label htmlFor="eventDate" className="mb-1">Event Date *</label> {/* Label for the event date input */}
           <input
             id="eventDate"
@@ -119,17 +130,6 @@ export default function AddEvent() {
             rows={4} // Set the number of rows for the textarea
           />
         </div>
-        <div className="flex flex-col">
-          <label htmlFor="eventOrganizer" className="mb-1">Event Organizer</label> {/* Label for the event organizer input */}
-          <input
-            id="eventOrganizer"
-            type="text"
-            value={eventOrganizer} // Bind the input value to the eventOrganizer state
-            onChange={(e) => setEventOrganizer(e.target.value)} // Update the eventOrganizer state on change
-            className="border rounded p-2"
-            placeholder="Enter event organizer" // Placeholder text for the input
-          />
-        </div>
         <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors">
           Add Event {/* Button text */}
         </button>
@@ -137,10 +137,10 @@ export default function AddEvent() {
       <p className="text-sm text-gray-600">{message}</p> {/* Display the message to the user */}
       <div className="text-sm text-gray-500">
         <p>Event Name: {eventName}</p> {/* Display the current event name input */}
+        <p>Event Organizer: {eventOrganizer}</p> {/* Display the current event organizer input */}
         <p>Event Date: {eventDate}</p> {/* Display the current event date input */}
         <p>Event Location: {eventLocation}</p> {/* Display the current event location input */}
         <p>Event Description: {eventDescription}</p> {/* Display the current event description input */}
-        <p>Event Organizer: {eventOrganizer}</p> {/* Display the current event organizer input */}
       </div>
     </div>
   );

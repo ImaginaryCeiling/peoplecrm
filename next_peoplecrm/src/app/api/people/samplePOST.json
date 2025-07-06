@@ -1,7 +1,10 @@
 {
     "name": "John Doe",
     "email": "john.doe@example.com",
-    "phone": "1234567890",
-    "address": "123 Main St, Anytown, USA",
-    "notes": "This is a sample note"
+    "phone": "+1-555-0123",
+    "location": "San Francisco, CA",
+    "role": "Software Engineer",
+    "linkedin": "https://linkedin.com/in/johndoe",
+    "notes": "Met at tech conference. Interested in AI and machine learning.",
+    "organization_id": 1
 }

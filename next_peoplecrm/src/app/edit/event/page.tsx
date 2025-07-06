@@ -117,6 +117,17 @@ function EditEventContent() {
           />
         </div>
         <div className="flex flex-col">
+          <label htmlFor="eventOrganizer" className="mb-1">Event Organizer</label>
+          <input
+            id="eventOrganizer"
+            type="text"
+            value={eventOrganizer}
+            onChange={(e) => setEventOrganizer(e.target.value)}
+            className="border rounded p-2"
+            placeholder="Enter event organizer"
+          />
+        </div>
+        <div className="flex flex-col">
           <label htmlFor="eventDate" className="mb-1">Event Date *</label>
           <input
             id="eventDate"
@@ -147,17 +158,6 @@ function EditEventContent() {
             className="border rounded p-2"
             placeholder="Enter event description"
             rows={4}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="eventOrganizer" className="mb-1">Event Organizer</label>
-          <input
-            id="eventOrganizer"
-            type="text"
-            value={eventOrganizer}
-            onChange={(e) => setEventOrganizer(e.target.value)}
-            className="border rounded p-2"
-            placeholder="Enter event organizer"
           />
         </div>
         <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors">

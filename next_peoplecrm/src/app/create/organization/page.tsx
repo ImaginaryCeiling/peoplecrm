@@ -9,17 +9,14 @@ export default function AddOrganization() {
     const [industry, setIndustry] = useState('');
     const [location, setLocation] = useState('');
     const [website, setWebsite] = useState('');
-    const [numEmployees, setNumEmployees] = useState('');
     const [contactEmail, setContactEmail] = useState('');
-    const [associatedPeople, setAssociatedPeople] = useState('');
-    const [associatedEvents, setAssociatedEvents] = useState('');
     const [notes, setNotes] = useState('');
 
     const [message, setMessage] = useState('Waiting for input...');
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Here is the data: "+orgName, industry, location, website, numEmployees, contactEmail, associatedPeople, associatedEvents);
+        console.log("Here is the data: "+orgName, industry, location, website, contactEmail, notes);
     
     try {
         const response = await fetch('/api/organization', {
@@ -59,6 +56,7 @@ export default function AddOrganization() {
     }
     catch (error) {
         console.error('Error:', error);
+        setMessage(error instanceof Error ? error.message : "Failed to add organization");
     }
 
     }
@@ -66,10 +64,10 @@ export default function AddOrganization() {
     return (
         <div className="max-w-md mx-auto p-6 space-y-4">
           <Header /> {/* Render the Header component */}
-          <h1 className="text-2xl font-bold mb-6">Add a Organization</h1> {/* Display the page title */}
+          <h1 className="text-2xl font-bold mb-6">Add an Organization</h1> {/* Display the page title */}
           <form className="space-y-4" onSubmit={handleSubmit}> {/* Form element with submit handler */}
             <div className="flex flex-col">
-              <label htmlFor="name" className="mb-1">Organization name</label> {/* Label for the name input */}
+              <label htmlFor="orgName" className="mb-1">Organization name *</label> {/* Label for the name input */}
               <input
                 id="orgName"
                 type="text"
@@ -77,48 +75,49 @@ export default function AddOrganization() {
                 onChange={(e) => setOrgName(e.target.value)} // Update the name state on change
                 className="border rounded p-2"
                 placeholder="Enter organization name" // Placeholder text for the input
+                required
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="industry" className="mb-1">Industry</label> {/* Label for the email input */}
+              <label htmlFor="industry" className="mb-1">Industry</label> {/* Label for the industry input */}
               <input
                 id="industry"
                 type="text"
-                value={industry} // Bind the input value to the email state
-                onChange={(e) => setIndustry(e.target.value)} // Update the email state on change
+                value={industry} // Bind the input value to the industry state
+                onChange={(e) => setIndustry(e.target.value)} // Update the industry state on change
                 className="border rounded p-2"
                 placeholder="Enter industry" // Placeholder text for the input
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="location" className="mb-1">Location</label> {/* Label for the phone input */}
+              <label htmlFor="location" className="mb-1">Location</label> {/* Label for the location input */}
               <input
                 id="location"
                 type="text"
-                value={location} // Bind the input value to the phone state
-                onChange={(e) => setLocation(e.target.value)} // Update the phone state on change
+                value={location} // Bind the input value to the location state
+                onChange={(e) => setLocation(e.target.value)} // Update the location state on change
                 className="border rounded p-2"
                 placeholder="Enter location" // Placeholder text for the input
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="website" className="mb-1">Website</label> {/* Label for the address input */}
+              <label htmlFor="website" className="mb-1">Website</label> {/* Label for the website input */}
               <input
                 id="website"
-                type="text"
-                value={website} // Bind the input value to the address state
-                onChange={(e) => setWebsite(e.target.value)} // Update the address state on change
+                type="url"
+                value={website} // Bind the input value to the website state
+                onChange={(e) => setWebsite(e.target.value)} // Update the website state on change
                 className="border rounded p-2"
-                placeholder="Enter website" // Placeholder text for the input
+                placeholder="Enter website URL" // Placeholder text for the input
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="contact-email" className="mb-1">Contact Email</label> {/* Label for the address input */}
+              <label htmlFor="contact-email" className="mb-1">Contact Email</label> {/* Label for the contact email input */}
               <input
                 id="contact-email"
-                type="text"
-                value={contactEmail} // Bind the input value to the address state
-                onChange={(e) => setContactEmail(e.target.value)} // Update the address state on change
+                type="email"
+                value={contactEmail} // Bind the input value to the contact email state
+                onChange={(e) => setContactEmail(e.target.value)} // Update the contact email state on change
                 className="border rounded p-2"
                 placeholder="Enter contact email" // Placeholder text for the input
               />
@@ -134,28 +133,17 @@ export default function AddOrganization() {
                 rows={4} // Set the number of rows for the textarea
               />
             </div>
-            <div className="flex flex-col">
-              <label htmlFor="employee-count" className="mb-1">Number of Employees</label>
-              <input
-                id="employee-count"
-                type="text"
-                value="Calculated from contacts" // This will be calculated dynamically
-                className="border rounded p-2 bg-gray-100"
-                readOnly
-                disabled
-              />
-              <p className="text-sm text-gray-600 mt-1">This is automatically calculated based on contacts associated with this organization</p>
-            </div>
-            <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+            <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors">
               Add Organization {/* Button text */}
             </button>
           </form>
-          <p>{message}</p> {/* Display the message to the user */}
-          <div>
+          <p className="text-sm text-gray-600">{message}</p> {/* Display the message to the user */}
+          <div className="text-sm text-gray-500">
             <p>Organization name: {orgName}</p> {/* Display the current name input */}
-            <p>Industry: {industry}</p> {/* Display the current email input */}
-            <p>Location: {location}</p> {/* Display the current phone input */}
-            <p>Website: {website}</p> {/* Display the current address input */}
+            <p>Industry: {industry}</p> {/* Display the current industry input */}
+            <p>Location: {location}</p> {/* Display the current location input */}
+            <p>Website: {website}</p> {/* Display the current website input */}
+            <p>Contact Email: {contactEmail}</p> {/* Display the current contact email input */}
             <p>Notes: {notes}</p> {/* Display the current notes input */}
           </div>
         </div>

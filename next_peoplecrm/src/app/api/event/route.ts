@@ -9,6 +9,7 @@ interface EventUpdate {
     event_location?: string;
     event_description?: string;
     event_organizer?: string;
+    event_notes?: string;
     updated_at: string;
 }
 

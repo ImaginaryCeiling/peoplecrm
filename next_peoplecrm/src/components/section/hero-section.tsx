@@ -56,9 +56,12 @@ export default function HeroSection({
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-hero-gradient">
       {/* Auth Navigation */}
-      <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-20">
-        <Link href="/" className="text-orange-500 text-xl font-bold">
+      <div className="absolute top-6 left-6 right-6 flex justify-between items-center z-20">
+        <Link href="/" className="text-orange-500 text-3xl font-bold">
           Kokoro
+        </Link>
+        <Link href="/home" className="text-white text-xl font-bold">
+          Home
         </Link>
       </div>
 
