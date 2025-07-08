@@ -1,0 +1,38 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:John Doe
+N:Doe;John;;;
+EMAIL:john.doe@example.com
+TEL:+1-555-0123
+ADR:;;123 Main St;San Francisco;CA;94102;USA
+TITLE:Software Engineer
+ORG:Tech Corp
+URL:https://linkedin.com/in/johndoe
+NOTE:Met at tech conference. Interested in AI and machine learning.
+END:VCARD
+
+BEGIN:VCARD
+VERSION:3.0
+FN:Jane Smith
+N:Smith;Jane;;;
+EMAIL:jane.smith@company.com
+TEL:+1-555-0456
+ADR:;;456 Oak Ave;New York;NY;10001;USA
+TITLE:Product Manager
+ORG:Innovation Inc
+URL:https://linkedin.com/in/janesmith
+NOTE:Great product strategist with 5+ years experience.
+END:VCARD
+
+BEGIN:VCARD
+VERSION:3.0
+FN:Mike Johnson
+N:Johnson;Mike;;;
+EMAIL:mike.johnson@startup.io
+TEL:+1-555-0789
+ADR:;;789 Pine St;Austin;TX;73301;USA
+TITLE:CEO
+ORG:StartupXYZ
+URL:https://linkedin.com/in/mikejohnson
+NOTE:Founder of successful startup. Looking for partnerships.
+END:VCARD 

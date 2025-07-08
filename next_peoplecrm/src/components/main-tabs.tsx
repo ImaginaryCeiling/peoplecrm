@@ -37,15 +37,15 @@ export function MainTabs({ onAddNew, onEdit }: MainTabsProps) {
   }
 
   return (
-    <Tabs defaultValue="events" className="w-full">
+    <Tabs defaultValue="people" className="w-full">
       <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="events" className="flex items-center gap-2">
-          <Calendar className="h-4 w-4" />
-          Events
-        </TabsTrigger>
         <TabsTrigger value="people" className="flex items-center gap-2">
           <Users className="h-4 w-4" />
           People
+        </TabsTrigger>
+        <TabsTrigger value="events" className="flex items-center gap-2">
+          <Calendar className="h-4 w-4" />
+          Events
         </TabsTrigger>
         <TabsTrigger value="organizations" className="flex items-center gap-2">
           <Building2 className="h-4 w-4" />
