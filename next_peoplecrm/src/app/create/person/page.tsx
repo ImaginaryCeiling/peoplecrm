@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 // Import the Header component from the components directory
 import Header from "@/components/header";
 
+import { parseVCard, VCardContact, parseMultipleVCards } from "@/lib/vcard-parser";
+
 // Define the Organization interface
 interface Organization {
   id: number;
@@ -28,6 +30,10 @@ export default function AddPerson() {
   const [organization_id, setOrganizationId] = useState(""); // State for the organization input
   const [organizations, setOrganizations] = useState<Organization[]>([]); // State for available organizations
   const [loading, setLoading] = useState(false); // State for loading organizations
+  const [vcardFile, setVcardFile] = useState<File | null>(null); // State for vCard file
+  const [parsedContacts, setParsedContacts] = useState<VCardContact[]>([]); // State for parsed contacts
+  const [showVcardResults, setShowVcardResults] = useState(false); // State for showing vCard results
+  const [processingVcard, setProcessingVcard] = useState(false); // State for processing vCard
   
   // Declare a state variable for displaying messages to the user
   const [message, setMessage] = useState("Waiting for input...");
@@ -52,6 +58,80 @@ export default function AddPerson() {
     fetchOrganizations();
   }, []);
 
+  // Handle vCard file upload and parsing
+  const handleVcardFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.name.toLowerCase().endsWith('.vcf')) {
+      setMessage('Please select a valid .vcf file');
+      return;
+    }
+
+    setVcardFile(file);
+    setProcessingVcard(true);
+    setMessage('Processing vCard file...');
+
+    try {
+      const text = await file.text();
+      const contacts = parseMultipleVCards(text);
+      
+      if (contacts.length === 0) {
+        setMessage('No valid contacts found in the vCard file');
+        return;
+      }
+
+      setParsedContacts(contacts);
+      setShowVcardResults(true);
+      setMessage(`Found ${contacts.length} contact(s) in the vCard file`);
+    } catch (error) {
+      console.error('Error parsing vCard file:', error);
+      setMessage('Error parsing vCard file. Please check the file format.');
+    } finally {
+      setProcessingVcard(false);
+    }
+  };
+
+  // Add contact data to form
+  const applyContactData = (contact: VCardContact) => {
+    if (contact.name) setName(contact.name);
+    if (contact.email) setEmail(contact.email);
+    if (contact.phone) setPhone(contact.phone);
+    if (contact.location) setLocation(contact.location);
+    if (contact.role) setRole(contact.role);
+    if (contact.linkedin) setLinkedin(contact.linkedin);
+    if (contact.notes) setNotes(contact.notes);
+    
+    //find matching org
+    if (contact.organization) {
+      const matchingOrg = organizations.find(org => 
+        org.organization_name.toLowerCase().includes(contact.organization!.toLowerCase())
+      );
+      if (matchingOrg) {
+        setOrganizationId(matchingOrg.id.toString());
+      }
+    }
+    
+    setShowVcardResults(false);
+    setMessage('Contact data applied to form');
+  };
+
+  const clearVcardData = () => {
+    setVcardFile(null);
+    setParsedContacts([]);
+    setShowVcardResults(false);
+    setProcessingVcard(false);
+    setName("");
+    setEmail("");
+    setPhone("");
+    setLocation("");
+    setRole("");
+    setLinkedin("");
+    setNotes("");
+    setOrganizationId("");
+    setMessage("Form cleared");
+  };
   // Define the handleSubmit function to handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent the default form submission behavior
@@ -95,6 +175,11 @@ export default function AddPerson() {
       setLinkedin("");
       setNotes("");
       setOrganizationId("");
+
+      setVcardFile (null);
+      setParsedContacts([]);
+      setShowVcardResults(false);
+      setProcessingVcard(false);
       
       // Redirect back to dashboard after successful creation
       setTimeout(() => {
@@ -111,6 +196,68 @@ export default function AddPerson() {
     <div className="max-w-md mx-auto p-6 space-y-4">
       <Header /> {/* Render the Header component */}
       <h1 className="text-2xl font-bold mb-6">Add a Person</h1> {/* Display the page title */}
+
+      
+      {/* vCard Upload Section */}
+      <div className="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300">
+        <div className="flex justify-between items-center mb-3">
+          <h2 className="text-lg font-semibold">Import from vCard (.vcf)</h2>
+          {(vcardFile || showVcardResults) && (
+            <button
+              type="button"
+              onClick={clearVcardData}
+              className="text-sm text-red-600 hover:text-red-800 transition-colors"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        <div className="space-y-3">
+          <input
+            type="file"
+            accept=".vcf"
+            onChange={handleVcardFileChange}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+          />
+          <p className="text-xs text-gray-600">
+            Upload a .vcf file to automatically fill the form with contact information
+          </p>
+          {processingVcard && (
+            <div className="flex items-center gap-2 text-sm text-blue-600">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+              Processing vCard file...
+            </div>
+          )}
+        </div>
+        
+        {/* Show parsed contacts */}
+        {showVcardResults && parsedContacts.length > 0 && (
+          <div className="mt-4">
+            <h3 className="text-md font-medium mb-2">Found Contacts:</h3>
+            <div className="space-y-2 max-h-40 overflow-y-auto">
+              {parsedContacts.map((contact, index) => (
+                <div key={index} className="bg-white p-3 rounded border">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <p className="font-medium">{contact.name || 'Unknown Name'}</p>
+                      {contact.email && <p className="text-sm text-gray-600">{contact.email}</p>}
+                      {contact.organization && <p className="text-sm text-gray-600">{contact.organization}</p>}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => applyContactData(contact)}
+                      className="ml-2 px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
       <form className="space-y-4" onSubmit={handleSubmit}> {/* Form element with submit handler */}
         <div className="flex flex-col">
           <label htmlFor="name" className="mb-1">Name *</label> {/* Label for the name input */}
