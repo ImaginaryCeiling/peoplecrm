@@ -105,18 +105,22 @@ export async function GET(request: Request) {
     } else {
       // Fetch all people with organization details
       const { data: people, error } = await supabaseAdmin
-        .from('people')
-        .select(`
-          *,
-          organizations (
-            id,
-            organization_name,
-            organization_industry,
-            organization_location
-          )
-        `)
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+  .from('people')
+  .select(`
+    *,
+    people_organizations (
+      relationship_type,
+      organization:organizations (
+        id,
+        organization_name,
+        organization_industry,
+        organization_location
+      )
+    )
+  `)
+  .eq('user_id', userId)
+  .order('created_at', { ascending: false });
+
 
       if (error) {
         console.log("Error fetching people: "+error);
